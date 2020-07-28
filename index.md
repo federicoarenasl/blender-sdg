@@ -51,7 +51,7 @@ The classes we wish to recognize are the following:
 
 The algorithm mentioned above is going to be implemented in Python in the rendering software Blender. [Blender](https://www.blender.org/) is an open source software used for multiple rendering applications ranging from animation to product design. This software is going to allows to create realistic renderings of the objects seen above, while allowing us to access the position of each object too, a key feature for the labelling to be done.
 
-The Blender file explained in this blogpost, as well as the entire code and all necessary ressources can be found [here](https://github.com/federicoarenasl/BlenderDataGeneration.github.io).
+The Blender file explained in this blogpost, as well as the entire code and all necessary ressources can be found [here](https://github.com/federicoarenasl/Data-Generation-with-Blender/tree/master/Resources).
 
 # **2. Blender scene setup**
 Whichever it is the object you want to recognize, in order to generate synthetic data to train its recognizor, we have to represent this or these objects in Blender. Therefore, we have to create and setup a scene that tries to resemble the most to the actual, real-life scene in which we would normally find the objects we want to recognize. 
