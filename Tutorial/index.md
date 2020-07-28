@@ -32,8 +32,8 @@ This blogpost is divided into the following main sections:
 # **1. Overview of the Project**
 For this project we are going to generate the data to recognize  the wooden toys shown in the images below. In order to do this, we are going to create an algorithm that takes pictures of all of the objects in the same configuration as in the pictures, and also outputs the labels corresponding to the bounding boxes of the location of each object in each image. 
 
-![](Tutorial/Images/Realexample1.jpeg)  ![](Tutorial/Images/Realexample2.jpeg)  ![](Tutorial/Images/Realexample3.jpg)
-![](Tutorial/Images/Realexample4.jpg)  ![](Tutorial/Images/Realexample5.jpg)  ![](Tutorial/Images/Realexample6.jpg)
+![](Images/Realexample1.jpeg)  ![](Images/Realexample2.jpeg)  ![](Images/Realexample3.jpg)
+![](Images/Realexample4.jpg)  ![](Images/Realexample5.jpg)  ![](Images/Realexample6.jpg)
 
 The classes we wish to recognize are the following:
 
@@ -61,22 +61,22 @@ In order to explain how to do this, in this section we'll walk the reader throug
 ## **Step 1: CAD Model import**
 The first step consists of importing (or creating) the objects we want to recognize into Blender. In our case, we decided to create the CAD model in Catia V5, and then import it as an .stl. It is also possible to create the model from scratch in Blender, however, as we were more fluent in Catia, we decided to do this on that software. 
 
-![](Tutorial/Images/Catia_CAD_model.PNG)
+![](Images/Catia_CAD_model.PNG)
 _Catia environment with the assembly of the objects we aim to recognize_
 
 We then move on to opening Blender to start importing each .stl object we want to recognize. We click in the _File_ window, then _Import_, and finally we select the _Stl(.stl)_ option, in order to import the models previously exported from Catia V5.
 
-![](Tutorial/Images/Import_STIL_blender.PNG)
+![](Images/Import_STIL_blender.PNG)
 _Blender STL file import_
 
 Before finishing the STL import, we have to specify that the scale would be _0.001_, since Blender works in _meters_ and Catia works in _milimiters_. This keeps the units of our model scaled to the Blender reference system, so in later stages the camera has a proportioned size compared to the imported model
 
-![](Tutorial/Images/Scale_image_Blender.png)
+![](Images/Scale_image_Blender.png)
 _Scaling the STL model before import in Blender_
 
 Once each object is imported into the Blender Environment, make sure to create a plane to depict the surface of the scene. Also, make sure to name every object in the _Scene Collection_ menu that can be seen in the right panel in the following image. Make sure these names are easy to write, short and united by an underscore if the name contains two words.
 
-![](Tutorial/Images/Blender_CAD_model_import.PNG)
+![](Images/Blender_CAD_model_import.PNG)
 _Final scene with all objects imported and named_
 
 ## **Step 2: Scene definition**
@@ -84,24 +84,24 @@ Once the models are imported, we move onto defning the entiring scene in order t
 
 Therefore, we start by defining the materials of each object by selecting it and going into the _Material_ option in the right panel shown below. The three parameters that are key to tuning the appearance of your object are the _Base Color_, _Specular_, and _Rougness_. The las two need to be adjusted to define whether the object absorbs or reflects light, if it is shiny or matte.
 
-![](Tutorial/Images/Define_materials_Blender.png)
+![](Images/Define_materials_Blender.png)
 _Blender object material definition Panel_
 
 Additionnaly, and if necessary, textures can be added to the objects in the scene. These textures can be imported from an image and impose the _Base Color_ from the image. For our project, textures were added to the floor and the platform that holds the objects. A detailed guide on importing textures into Blender can be found [here](https://www.youtube.com/watch?v=r5YNJghc81U).
 
-![](Tutorial/Images/Add_textures_Blender.png)
+![](Images/Add_textures_Blender.png)
 _Assigning textures to a Blender object_
 
 Next, the lights were defined, the second light can be created by copying and pasting the first light, that is created automatically when the Blender scene is started. As for with the objects, make sure to assign names to these lights such as _light1_ and _light2_ that will allow you to call them easily in the code, once we get to the scripting part. 
 
 These two lights' most important parameter is the _Power_ parameter, which will allow us to play with the intensity of the light once we get to the scripting part. In the following picture, on the right bottom part, we can see the "Light Properties" panel being open, with the _Power_ parameter on 16W.
 
-![](Tutorial/Images/Light_setup_Blender.png)
+![](Images/Light_setup_Blender.png)
 _Blender scene with its respective lights_
 
 Once all the materials are defined, and the lights that fit your purposes are added, we can move on to visualizing the Rendering by clicking on the top right botton circled in green in the following picture. This allows us to access the _Viewport Shading_ in _Rendered_ mode.
 
-![](Tutorial/Images/Final_scene_Blender.png)
+![](Images/Final_scene_Blender.png)
 _Rendered objects_
 
 Now the scene is setup! If any difficulties were found while going through this step, we encourage you to look at [a complete guide made by Blender Guru on how to set the rendering configurations in Blender](https://www.youtube.com/watch?v=ZTxBrjN1ugA) as well as [the guide on setting the materials of each object in the scene](https://www.youtube.com/watch?v=5lr8QnR5WWU&t=414s).
@@ -113,17 +113,17 @@ However, this movement isn't so evident if we think of the cubical space (x,y,z)
 
 Consequently, we create an axis and locate it in the center of the scene, as shown below. 
 
-![](Tutorial/Images/Add_axis_Blender.png)
+![](Images/Add_axis_Blender.png)
 _Adding an axis to the center of the scene in Blender_
 
 Now, in order to subordinate the movement of the camera to the movement of the axis, we hold _Shift_ and select the _camera first_ and then the _axis_. Once both of them are selected, hwe hit _Ctr + P_ and select _Object (Keep Transform)_. This will make the axis a parent of the Camera.
 
-![](Tutorial/Images/Parent_camera_to_axis_Blender.png)
+![](Images/Parent_camera_to_axis_Blender.png)
 _Set the Axis as a Parent of the Camera_
 
 You can go ahead and test that this worked by going into _Camera view_, _selecting the axis_ and going into the _Transform window_ highlighted in green in the image below, and _changing the Rotation coordinates of the axis_. You'll see that the camera orbits the objects when the axis rotational coordinates are changed.
 
-![](Tutorial/Images/Final_demo_parent_Blender.png)
+![](Images/Final_demo_parent_Blender.png)
 _Demonstration of the camera orbiting the objects_
 
 Finally, he complete guide to how to set the camera to orbit around a specific object can be found [here](https://www.youtube.com/watch?v=ghCsEVj2CFE).
@@ -133,25 +133,25 @@ Now that the complete scene is setup, we can start with the scripting. This Blen
 
 This scripting functionality can be accessed by clicking in the _Scrpting_ window underlined in orange in the following picture. By clicking on this window, we-ll have three major elements come up: the _Blender Console_ shown in yellow, the _Scripting environment_ shown in orange, and the _Command tracker_ shown in green.
 
-![](Tutorial/Images/Scripting_console_Blender.png)
+![](Images/Scripting_console_Blender.png)
 _Scripting window and its main components_
 
 The _Command Tracker_ allows you to track what actual scripting commands are being used when modifying a specific parameter in the Blender environment. For example, in the following picture I modifyied the position of the Axis.
 
 <p align="center">
-<img  src="Tutorial/Images/Scripting_tracker_blender.png">
+<img  src="Images/Scripting_tracker_blender.png">
 </p>
 
 _Tracking of the script used to change the position of the axis_
 
 The _Scripting environment_ allows you to import and save previously created Python Scripts. The script in the _Scripting environment_ will be saved to an external location of your choise. Additionnally, when the script is ready, you can run it by clicking on the _Run Script_ Button
 
-![](Tutorial/Images/Save_run_script_blender.png)
+![](Images/Save_run_script_blender.png)
 _Saving, Opening and Running your script in Blender_
 
 Finally, once the script is ready to run, go to _Window/Toggle System Console_ to access the Console that shows the output of your code. This can be better represented in the following image.
 
-![](Tutorial/Images/Toggle_window_blender.png)
+![](Images/Toggle_window_blender.png)
 _Toggle System Console Output_
 
 
@@ -236,7 +236,7 @@ bpy.data.objects['Light2']
 For each object, you can modify their information (position, location, etc...) in the scene editor. In the following picture, you can see how to modify the rotation of an object. It is important to understand the utility of the objects' parameters to be able to create an appropriate algorithm.
 You can see that when you modify a parameter, its value is updated in the console as well. 
 
-![](Tutorial/Images/Modifying_objects_Blender.png)
+![](Images/Modifying_objects_Blender.png)
 _Modifying an object's parameter_
 
 We can now modify the different parameters in the console using the following lines of code:
@@ -253,7 +253,7 @@ _camera.location_ modifies the location of the camera.
 _axe.rotation_euler_ modifies the rotation of the object 'axe'.
 
 
-![](Tutorial/Images/After_scripting_changes_Blender.PNG)
+![](Images/After_scripting_changes_Blender.PNG)
 _Scene obtained after running the previous lines of code_
 
 You can now modify one of the parameter to see how the scene changes.
@@ -264,20 +264,20 @@ You can now modify one of the parameter to see how the scene changes.
 
 Here we modified the orientation of the object 'axe'.
 
-![](Tutorial/Images/Scripting_rotated_Blender.png)
+![](Images/Scripting_rotated_Blender.png)
 _Scene obtained after the modification of the parameter_
 
 
 ## **Main procedure to generate the training data**
 To train our algorithm, we need a large amount of data. Thus, we will create an algorithm that takes pictures of our objects from different angles by moving the camera around the scene. We will also modify the brightness of the lights in order to obtain a data set more representative of reality. 
 
-![](Tutorial/Images/Figure_environment_Blender.png)
+![](Images/Figure_environment_Blender.png)
 _Figure of the environment used in Blender_
 
 The following algorithm consists in three loops, each of them modifies one of the angle of the camera (see the previous picture). Inside the loops, we also modify the lights' brightness. Then, for each position of the camera, we take a picture of the scene and create a text file containing the object information. 
 
 <p align="center">
-<img  src="Tutorial/Images/finalalgorithm.png">
+<img  src="Images/finalalgorithm.png">
 </p>
 
 _Procedure to generate pictures of the objects_
@@ -290,7 +290,7 @@ Here you can see pictures taken by the previous algorithm:
 
 Thanks to this algorithm, we will obtain several images with a matching text file containing the location of the objects and their bounding box. This data set will then be used to train a deep learning algorithm. 
 
-![](Tutorial/Images/Expected_results.png)
+![](Images/Expected_results.png)
 _Expected results of the algorithm_
 
 ## **Rendering class initial definition**
@@ -459,7 +459,7 @@ Next, if the object is found, the function _self.format_coordinates(b_box, i, re
     ```
 
 <p align="center">
-<img  src="Tutorial/Images/Label_object.png">
+<img  src="Images/Label_object.png">
 </p>
 
 _Initial format of the label ([source](https://github.com/theAIGuysCode/OIDv4_ToolKit))_
@@ -476,7 +476,7 @@ to the format used by YOLO:
     ```
 
 <p align="center">
-<img  src="Tutorial/Images/box_label_yolo.png">
+<img  src="Images/box_label_yolo.png">
 </p>
 
 _Format of the label after formatting ([source](https://datascience-enthusiast.com/DL/Autonomous_driving_Car_detection.html))_
@@ -525,7 +525,7 @@ if __name__ == '__main__':
 ```
 The program will output the progress to the Blender _Toggle Console Window_. It will output the images and labels to the specified locations.
 
-![](Tutorial/Images/toggle_results_labels.PNG)
+![](Images/toggle_results_labels.PNG)
 _Messages in the Toggle Console Window_
 
 The labels, as mentioned before, will have the following format.
@@ -556,13 +556,13 @@ We made 5 different tests in order to obtain the best performance. However, we w
 In any case, the training outputted the following loss charts.
 
 <p align="center">
-<img  src="Tutorial/Images/Loss_charts.png">
+<img  src="Images/Loss_charts.png">
 </p>
 
 We made a summary of the results and found that increasing the quantity of data isn't always helpful if you are not representing the variations that the test will contain. This can be seen in the comparison between _Test 1_ and _Test 5_. 
 
 <p align="center">
-<img  src="Tutorial/Images/Accuracy_results.png">
+<img  src="Images/Accuracy_results.png">
 </p>
 
 The recognition results are satisfactory taking into account that it took us around a week to obtain the data and train our models, with low-capacity computers. This means that the scalability of synthetic data generation is very good. With better resources, we can train our algorithms with a lot more data, and even more photo-realistic.
