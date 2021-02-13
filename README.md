@@ -1,6 +1,6 @@
 **Generate synthetic data with Blender and Python**
 ======
-This blogpost will go through a very attractive alternative for gathering data for a given specific application. Regardless of the type of application, this blogpost seeks to show the reader the pontential of synthetic data generation with open-source resources such as Blender. 
+This blogpost will go through a very attractive alternative for gathering data for a given specific application. Regardless of the type of application, this blogpost seeks to show the reader the pontential of synthetic data generation with open-source resources such as Blender. This is the link to the full blogpost: https://federicoarenasl.github.io/Data-Generation-with-Blender/.
 
 Indeed, the need to gather data and label it in a short amount of time is one that hasn't been exactly solved when it comes to real-life data. This is why, to tackle this problem, we must turn to synthetic data generation which, with the right amount of code, can provide both the labels and the features needed to train a deep learning model later on. 
 
