@@ -50,7 +50,7 @@ A demonstration of the algorithm working on synthetic test data can be seen belo
 A demonstration of the algorithm working on real test data can be seen below and the full video can be found [here](https://youtu.be/nBRsICWZIZc).
 
 <p align="center">
-<img  src="https://media.giphy.com/media/VdiHTovXYeYUxAx3TA/giphy.gif">
+<img  src="https://media.giphy.com/media/ZXwnATpM4K1dYbibZM/giphy.gif">
 </p>
 
 .
