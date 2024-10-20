@@ -1,0 +1,21 @@
+file_path: /path/to/output
+engine: blender
+scene_config:
+  camera_names:
+    - camera1
+    - camera2
+  axis_names:
+    - axis1
+    - axis2
+  element_names:
+    - element1
+    - element2
+  light_names:
+    - light1
+    - light2
+
+sweep_config:
+    camera_d_limits: [1.0, 10.0]
+    beta_limits: [0.0, 90.0]
+    gamma_limits: [-180.0, 180.0]
+    rotation_step: 10
