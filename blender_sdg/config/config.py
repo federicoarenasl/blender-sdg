@@ -12,6 +12,7 @@ class SupportedEngines(str, Enum):
 
 class SceneConfig(BaseModel):
     scene_name: str
+    scene_path: str
     camera_names: List[str]
     axis_names: List[str]
     element_names: List[str]
@@ -58,7 +59,7 @@ class SweepConfig(BaseModel):
 
 
 class RenderingConfig(BaseModel):
-    file_path: str
+    target_path: str
     engine: SupportedEngines
     scene_config: SceneConfig
     sweep_config: SweepConfig

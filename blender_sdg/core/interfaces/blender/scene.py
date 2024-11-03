@@ -1,9 +1,9 @@
 """Blender scene interface for the SDG."""
 
 import bpy
-from blender_sdg.types.model import Scene, Snapshot
+from blender_sdg.core.model import Scene, Snapshot
 from blender_sdg.config import SceneConfig
-from blender_sdg.core.interfaces.blender.object import BlenderObject
+from blender_sdg.core.interfaces.blender.object import BlenderElement
 
 
 class BlenderScene(Scene):
@@ -32,6 +32,9 @@ class BlenderScene(Scene):
         scene_config: SceneConfig,
     ):
         """Create a BlenderScene object from an existing scene."""
+        # Load the scene from the file path
+        cls._load_from_scene_path(scene_config.scene_path)
+
         # Map the scene configuration to the Blender objects
         config_map = {
             "cameras": scene_config.camera_name,
@@ -51,5 +54,11 @@ class BlenderScene(Scene):
         return cls(**attributes)
 
     @staticmethod
-    def _get_blender_objects(names: list[str]) -> list[BlenderObject]:
-        return [BlenderObject.from_bpy_object(bpy.data.objects[name]) for name in names]
+    def _get_blender_objects(names: list[str]) -> list[BlenderElement]:
+        return [
+            BlenderElement.from_bpy_object(bpy.data.objects[name]) for name in names
+        ]
+
+    @staticmethod
+    def _load_from_scene_path(scene_path: str) -> bpy.types.Scene:
+        bpy.ops.wm.open_mainfile(filepath=scene_path)

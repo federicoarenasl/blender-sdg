@@ -1,21 +1,23 @@
-file_path: /path/to/output
+target_path: ~/Desktop/test_output
 engine: blender
 scene_config:
+  scene_path: core/interfaces/blender/tyless-5-objects.blend
+  scene_name: Scene
   camera_names:
-    - camera1
-    - camera2
+    - Camera
   axis_names:
-    - axis1
-    - axis2
+    - Axis
   element_names:
-    - element1
-    - element2
+    - obj_01
+    - obj_02
+    - obj_03
+    - obj_04
+    - obj_05
   light_names:
-    - light1
-    - light2
-
+    - Light
 sweep_config:
-    camera_d_limits: [1.0, 10.0]
-    beta_limits: [0.0, 90.0]
-    gamma_limits: [-180.0, 180.0]
-    rotation_step: 10
+    step: 10
+    yaw_limits: [0.0, 90.0]
+    roll_limits: [-180.0, 180.0]
+    camera_height_limits: [1.0, 10.0]
+    random_seed: 0

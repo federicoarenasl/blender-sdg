@@ -2,7 +2,7 @@ from blender_sdg.core.interfaces.blender.scene import BlenderScene
 from blender_sdg.core.interfaces.blender.sweep import BlenderSweep
 from blender_sdg.core.interfaces.blender.object import BlenderElement
 from blender_sdg.config import RenderingConfig
-from blender_sdg.types.model import Snapshot
+from blender_sdg.core.model import Snapshot
 import bpy
 
 from tqdm import tqdm
@@ -43,6 +43,9 @@ class BlenderRenderer:
 
 def render_sweep_from_config(config: RenderingConfig):
     """Render a sweep from a configuration."""
+    # Load Blender scene
+    bpy.ops.wm.open_mainfile(filepath=config.scene_config.scene_path)
+
     # Initialize the scene, sweep, and renderer
     scene: BlenderScene = BlenderScene.from_scene_config(config.scene_config)
     sweep: BlenderSweep = BlenderSweep.from_sweep_config(config.sweep_config)
@@ -53,5 +56,5 @@ def render_sweep_from_config(config: RenderingConfig):
         scene.prepare_from_snapshot(snapshot)
 
         # Render the snapshot, and create bounding boxes
-        renderer.render_snapshot(snapshot, config.file_path)
+        renderer.render_snapshot(snapshot, config.target_path)
         renderer.create_bounding_boxes(scene.camera, scene.elements, config.file_path)

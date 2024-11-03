@@ -1,4 +1,4 @@
-from blender_sdg.types.model import Sweep, Snapshot
+from blender_sdg.core.model import Sweep, Snapshot
 from blender_sdg.config import SweepConfig
 from itertools import product
 
