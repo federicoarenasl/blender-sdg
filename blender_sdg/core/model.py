@@ -1,5 +1,6 @@
 from typing import Tuple, List
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
+import uuid
 
 
 class Element(BaseModel):
@@ -9,6 +10,7 @@ class Element(BaseModel):
     location: Tuple[float, float, float]
     rotation: Tuple[float, float, float]
     scale: Tuple[float, float, float]
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 class Scene(BaseModel):
@@ -19,14 +21,17 @@ class Scene(BaseModel):
     axis: List[Element]
     elements: List[Element]
     lights: List[Element]
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 class Snapshot(BaseModel):
     """Base data class for all snapshots in a sweep."""
 
-    yaw: int
-    roll: int
-    camera_height: int
+    id: uuid.UUID = Field(default_factory=uuid.uuid4)
+    yaw: float
+    roll: float
+    camera_height: float
+    light_energy: float
 
 
 class Sweep(BaseModel):

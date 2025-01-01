@@ -1,7 +1,15 @@
-target_path: ~/Desktop/test_output
+# General settings
 engine: blender
+target_path: test_output
+
+# Camera settings
+random_seed: 0
+resolution: [256, 256]
+samples: 128
+
+# Scene settings
 scene_config:
-  scene_path: core/interfaces/blender/tyless-5-objects.blend
+  scene_path: core/interfaces/blender/scenes/tyless-5-objects.blend
   scene_name: Scene
   camera_names:
     - Camera
@@ -15,9 +23,13 @@ scene_config:
     - obj_05
   light_names:
     - Light
+
+# Sweep settings
 sweep_config:
+    name: example_sweep
     step: 10
-    yaw_limits: [0.0, 90.0]
-    roll_limits: [-180.0, 180.0]
-    camera_height_limits: [1.0, 10.0]
-    random_seed: 0
+    yaw_limits: [0.0, 0.0]
+    roll_limits: [0.0, 0.0]
+    camera_height_limits: [1.0, 1.0]
+    light_energy_limits: [1000.0, 1000.0]
+    

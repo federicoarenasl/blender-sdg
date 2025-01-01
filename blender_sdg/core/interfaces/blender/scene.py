@@ -3,11 +3,16 @@
 import bpy
 from blender_sdg.core.model import Scene, Snapshot
 from blender_sdg.config import SceneConfig
-from blender_sdg.core.interfaces.blender.object import BlenderElement
+from blender_sdg.core.interfaces.blender.object import BlenderElement, BlenderLight
+
+from warnings import warn
+from typing import List
 
 
 class BlenderScene(Scene):
     """Interface for Blender scenes."""
+
+    blender_scene: bpy.types.Scene
 
     def __init__(
         self,
@@ -15,16 +20,23 @@ class BlenderScene(Scene):
         **kwargs,
     ):
         """Initialize the interface with a Blender scene."""
-        self.blender_scene = blender_scene
-        super().__init__(**kwargs)
+        super().__init__(**kwargs, blender_scene=blender_scene)
 
     def prepare_from_snapshot(self, snapshot: Snapshot):
         """Prepare the scene for a snapshot."""
+        for attr, message in [
+            ("axis", "axes"),
+            ("cameras", "cameras"),
+            ("lights", "lights"),
+        ]:
+            if len(getattr(self, attr)) > 1:
+                warn(f"Multiple {message} found in the scene. Using the first one.")
+
         # Prepare axis, camera and light
-        self.axis.set_location((0, 0, 0))
-        self.axis.set_rotation((snapshot.yaw, snapshot.roll, 0))
-        self.camera.set_location((0, 0, snapshot.camera_height))
-        self.light.set_energy(snapshot.light_energy)
+        self.axis[0].set_location(location=(0, 0, 0))
+        self.axis[0].set_rotation(rotation=(snapshot.yaw, snapshot.roll, 0))
+        self.cameras[0].set_location(location=(0, 0, snapshot.camera_height))
+        self.lights[0].set_energy(energy=snapshot.light_energy)
 
     @classmethod
     def from_scene_config(
@@ -36,25 +48,32 @@ class BlenderScene(Scene):
         cls._load_from_scene_path(scene_config.scene_path)
 
         # Map the scene configuration to the Blender objects
-        config_map = {
-            "cameras": scene_config.camera_name,
-            "axis": scene_config.axis_name,
+        attr_to_names = {
+            "cameras": scene_config.camera_names,
+            "axis": scene_config.axis_names,
             "elements": scene_config.element_names,
             "lights": scene_config.light_names,
         }
-
         # Initialize and populate the attributes
         attributes = {
             "name": scene_config.scene_name,
             "blender_scene": bpy.data.scenes[scene_config.scene_name],
         }
-        for attr, config_name in config_map.items():
-            attributes[attr] = cls._get_blender_objects(config_name)
+        for attr, names in attr_to_names.items():
+            attributes[attr] = cls._get_blender_objects(names=names, object_type=attr)
 
         return cls(**attributes)
 
     @staticmethod
-    def _get_blender_objects(names: list[str]) -> list[BlenderElement]:
+    def _get_blender_objects(
+        object_type: str, names: List[str]
+    ) -> list[BlenderElement]:
+        """Get Blender objects from a list of names and their type."""
+
+        if object_type == "lights":
+            return [
+                BlenderLight.from_bpy_object(bpy.data.objects[name]) for name in names
+            ]
         return [
             BlenderElement.from_bpy_object(bpy.data.objects[name]) for name in names
         ]

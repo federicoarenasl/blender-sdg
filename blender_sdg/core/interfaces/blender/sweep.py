@@ -1,6 +1,7 @@
 from blender_sdg.core.model import Sweep, Snapshot
 from blender_sdg.config import SweepConfig
 from itertools import product
+from typing import List
 
 
 class BlenderSweep(Sweep):
@@ -14,14 +15,14 @@ class BlenderSweep(Sweep):
     def from_sweep_config(cls, sweep_config: SweepConfig):
         """Create a BlenderSweep object from an existing sweep."""
         return cls(
-            name=sweep_config.sweep_name,
+            name=sweep_config.name,
             snapshots=cls.snapshots_from_config(sweep_config),
         )
 
     @staticmethod
-    def snapshots_from_config(sweep_config: SweepConfig) -> list[Snapshot]:
+    def snapshots_from_config(sweep_config: SweepConfig) -> List[Snapshot]:
         """Generate snapshots from a sweep configuration."""
-        # Collect yaw, roll, and camera height values
+        # Collect yaw, roll, and camera height values, TODO: simplify
         yaw_range = range(
             int(sweep_config.yaw_limits[0]),
             int(sweep_config.yaw_limits[1]) + 1,
@@ -38,9 +39,20 @@ class BlenderSweep(Sweep):
             sweep_config.step,
         )
 
+        light_energy_range = range(
+            int(sweep_config.light_energy_limits[0]),
+            int(sweep_config.light_energy_limits[1]) + 1,
+            sweep_config.step,
+        )
+
         return [
-            Snapshot(yaw, roll, camera_height)
-            for yaw, roll, camera_height in product(
-                yaw_range, roll_range, camera_height_range
+            Snapshot(
+                yaw=yaw,
+                roll=roll,
+                camera_height=camera_height,
+                light_energy=light_energy,
+            )
+            for yaw, roll, camera_height, light_energy in product(
+                yaw_range, roll_range, camera_height_range, light_energy_range
             )
         ]

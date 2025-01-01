@@ -1,12 +1,16 @@
 """Interface for Blender objects."""
 
 import bpy
-from blender_sdg.types.model import Element
+from blender_sdg.core.model import Element
 from typing import Tuple
+
+import math
 
 
 class BlenderElement(Element):
     """Base Interface for Blender objects."""
+
+    object: bpy.types.Object
 
     def __init__(self, bpy_object: bpy.types.Object):
         """
@@ -18,18 +22,37 @@ class BlenderElement(Element):
         bpy_object: bpy.types.Object
             The Blender object to interface with.
         """
-        self.object = bpy_object
-        self.name = bpy_object.name
-        self.location = bpy_object.location
-        self.rotation = bpy_object.rotation_euler
+        super().__init__(
+            name=bpy_object.name,
+            location=(
+                bpy_object.location.x,
+                bpy_object.location.y,
+                bpy_object.location.z,
+            ),
+            rotation=(
+                bpy_object.rotation_euler.x,
+                bpy_object.rotation_euler.y,
+                bpy_object.rotation_euler.z,
+            ),
+            scale=(bpy_object.scale.x, bpy_object.scale.y, bpy_object.scale.z),
+            object=bpy_object,
+        )
 
-    def set_location(self):
-        """Set the location of the object"""
-        raise NotImplementedError
+    def set_location(self, location: Tuple[float, float, float]):
+        """Set the location of the axis"""
+        self.object.location = location
 
-    def set_rotation(self):
-        """Set the rotation of the object"""
-        raise NotImplementedError
+    def set_rotation(
+        self, rotation: Tuple[float, float, float], convert_to_radians: bool = True
+    ):
+        """Set the rotation of the axis"""
+        if convert_to_radians:
+            rotation = tuple(math.radians(angle) for angle in rotation)
+        self.object.rotation_euler = rotation
+
+    def set_scale(self, scale: float):
+        """Set the scale of the axis"""
+        self.object.scale = (scale, scale, scale)
 
     def get_inverse_matrix(self):
         """Get the inverse matrix of the object"""
@@ -42,22 +65,6 @@ class BlenderElement(Element):
     @classmethod
     def from_bpy_object(cls, blender_object: bpy.types.Object):
         return cls(blender_object)
-
-
-class BlenderAxis(BlenderElement):
-    """Interface for Blender axes."""
-
-    def set_location(self, location: Tuple[float, float, float]):
-        """Set the location of the axis"""
-        self.object.location = location
-
-    def set_rotation(self, rotation: Tuple[float, float, float]):
-        """Set the rotation of the axis"""
-        self.object.rotation_euler = rotation
-
-    def set_scale(self, scale: float):
-        """Set the scale of the axis"""
-        self.object.scale = (scale, scale, scale)
 
 
 class BlenderLight(BlenderElement):

@@ -1,19 +1,20 @@
-from blender_sdg.config import RenderingConfig
-import blender_sdg.core.interfaces.blender.render as blender_renderer
+from blender_sdg.config import RenderingConfig, config_from_yaml
 
 
 def trigger_rendering_sweep(config: RenderingConfig):
     """Load a scene from a YAML configuration."""
     # Load the scene and sweep from the configuration
-    if config.engine != "blender":
-        raise ValueError(f"Unsupported engine: {config.engine}")
-    else:
+    if config.engine == "blender":
+        import blender_sdg.core.interfaces.blender.render as blender_renderer
+
         blender_renderer.render_sweep_from_config(config)
+
+    raise ValueError(f"Unsupported engine: {config.engine}")
 
 
 if __name__ == "__main__":
     import argparse
-    import json
+    import yaml
 
     parser = argparse.ArgumentParser(description="Render a sweep of snapshots.")
     parser.add_argument(
@@ -22,7 +23,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load the configuration and render the sweep
-    config = RenderingConfig(**json.load(open(args.config_path)))
+    with open(args.config_path, "r") as config_file:
+        config = config_from_yaml(yaml.load(config_file, Loader=yaml.FullLoader))
 
     # Render the sweep
     trigger_rendering_sweep(config)
