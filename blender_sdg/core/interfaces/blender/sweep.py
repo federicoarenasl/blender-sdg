@@ -38,7 +38,6 @@ class BlenderSweep(Sweep):
             int(sweep_config.camera_height_limits[1]) + 1,
             sweep_config.step,
         )
-
         light_energy_range = range(
             int(sweep_config.light_energy_limits[0]),
             int(sweep_config.light_energy_limits[1]) + 1,

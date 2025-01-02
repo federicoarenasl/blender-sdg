@@ -3,4 +3,5 @@ from blender_sdg.config.config import (
     RenderingConfig,
     SceneConfig,
     SweepConfig,
+    SupportedEngines,
 )

@@ -54,9 +54,10 @@ class BlenderElement(Element):
         """Set the scale of the axis"""
         self.object.scale = (scale, scale, scale)
 
-    def get_inverse_matrix(self):
+    def get_matrix(self, inverse: bool = False, normalized: bool = False):
         """Get the inverse matrix of the object"""
-        return self.object.matrix_world.inverted()
+        matrix = self.object.matrix_world.inverted() if inverse else self.object.matrix_world
+        return matrix.normalized() if normalized else matrix
 
     def get_mesh(self, preserve_all_data_layers: bool = True):
         """Get the mesh of the model"""

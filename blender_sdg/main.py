@@ -1,15 +1,15 @@
-from blender_sdg.config import RenderingConfig, config_from_yaml
+from blender_sdg.config import RenderingConfig, SupportedEngines, config_from_yaml
 
 
 def trigger_rendering_sweep(config: RenderingConfig):
     """Load a scene from a YAML configuration."""
     # Load the scene and sweep from the configuration
-    if config.engine == "blender":
-        import blender_sdg.core.interfaces.blender.render as blender_renderer
+    if config.engine != SupportedEngines.BLENDER:
+        raise ValueError(f"Unsupported engine: {config.engine}")
 
-        blender_renderer.render_sweep_from_config(config)
+    import blender_sdg.core.interfaces.blender.render as blender_renderer
 
-    raise ValueError(f"Unsupported engine: {config.engine}")
+    blender_renderer.render_sweep_from_config(config)
 
 
 if __name__ == "__main__":

@@ -39,3 +39,24 @@ class Sweep(BaseModel):
 
     name: str
     snapshots: List[Snapshot]
+
+
+class SnapshotAnnotation(BaseModel):
+    """Base data class for all object annotations in a sweep."""
+
+    bbox: List[List[float]]
+    categories: List[int]
+
+
+class Annotation(BaseModel):
+    """Base data class for all annotations in a sweep."""
+
+    file_name: str
+    objects: SnapshotAnnotation
+
+
+class Dataset(BaseModel):
+    """Base data class for all datasets."""
+
+    path: str
+    annotations: List[Annotation]
