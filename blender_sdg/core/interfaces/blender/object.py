@@ -50,13 +50,15 @@ class BlenderElement(Element):
             rotation = tuple(math.radians(angle) for angle in rotation)
         self.object.rotation_euler = rotation
 
-    def set_scale(self, scale: float):
+    def set_scale(self):
         """Set the scale of the axis"""
-        self.object.scale = (scale, scale, scale)
+        raise NotImplementedError("Setting the scale of an element is not supported")
 
     def get_matrix(self, inverse: bool = False, normalized: bool = False):
         """Get the inverse matrix of the object"""
-        matrix = self.object.matrix_world.inverted() if inverse else self.object.matrix_world
+        matrix = (
+            self.object.matrix_world.inverted() if inverse else self.object.matrix_world
+        )
         return matrix.normalized() if normalized else matrix
 
     def get_mesh(self, preserve_all_data_layers: bool = True):

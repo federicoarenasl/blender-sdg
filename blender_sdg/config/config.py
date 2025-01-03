@@ -35,6 +35,7 @@ class RenderingConfig(BaseModel):
     engine: SupportedEngines
     scene_config: SceneConfig
     sweep_config: SweepConfig
+    debug: bool = False
 
 
 def config_from_yaml(yaml_config: Dict) -> RenderingConfig:

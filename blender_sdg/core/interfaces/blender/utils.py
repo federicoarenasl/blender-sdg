@@ -1,8 +1,11 @@
 from blender_sdg.core.interfaces.blender.object import BlenderElement
 from blender_sdg.core.interfaces.blender.scene import BlenderScene
+from blender_sdg.core.model import Annotation, Snapshot
 from typing import List, Tuple, Optional
 import numpy as np
 import bpy
+
+from PIL import Image, ImageDraw, ImageFont
 
 import mathutils
 
@@ -104,6 +107,9 @@ def compute_bounding_box(
 ) -> Optional[np.ndarray]:
     """Compute the bounding box from the normalized coordinates.
 
+    The returned bounding box is in the format (top_x, top_y, width, height)
+    measured from the top left corner of the image.
+
     Parameters:
     -----------
     lx: List[float]
@@ -123,6 +129,9 @@ def compute_bounding_box(
     """
     if not lx or not ly:
         return None
+
+    # Flip y-coordinates if they are inverted (assuming normalized [0, 1])
+    ly = [1 - y for y in ly]
 
     # Calculate the bounding box limits
     top_x, bottom_x = np.clip([min(lx), max(lx)], 0.0, 1.0)
@@ -186,4 +195,65 @@ def make_bounding_box_relative(
         top_y * resolution[1],
         bottom_x * resolution[0],
         bottom_y * resolution[1],
+    )
+
+
+def draw_bounding_box_with_category(
+    target_path: str, annotation: Annotation, snapshot: Snapshot
+) -> None:
+    """
+    Draws bounding boxes and category labels on the image specified by the image_path.
+
+    Parameters:
+    -----------
+    target_path: str
+        The path to the image file.
+    annotation: Annotation
+        The annotation to draw on the image.
+
+    """
+    # Open the image
+    image = Image.open(f"{target_path}/{annotation.file_name}")
+    draw = ImageDraw.Draw(image)
+
+    # Extract bounding box and category data
+    bboxes = annotation.objects.bbox
+    categories = annotation.objects.categories
+
+    # Define a font for the category label
+    try:
+        font = ImageFont.truetype("arial.ttf", 15)
+    except IOError:
+        font = ImageFont.load_default()
+
+    # Draw debugging rectangle, and Annotation JSON inside it
+    draw.text((0, 0), "(0, 0)", fill="white", font=font)
+    draw.text(
+        (0, 30),
+        f"Snapshot: {snapshot.model_dump_json(indent=4)}",
+        fill="white",
+        font=font,
+    )
+
+    # Draw each bounding box and category label
+    for bbox, category in zip(bboxes, categories):
+        top_x, top_y, width, height = bbox
+
+        # Calculate the bottom coordinates
+        bottom_x = top_x + width
+        bottom_y = top_y + height
+
+        # Draw the rectangle
+        draw.rectangle([top_x, top_y, bottom_x, bottom_y], outline="red", width=2)
+
+        # Draw the category label
+        label = f"{category}, ({top_x:.2f}, {top_y:.2f})"
+        text_size = draw.textbbox((0, 0), label, font=font)[2:]
+        text_background = [top_x, top_y - text_size[1], top_x + text_size[0], top_y]
+        draw.rectangle(text_background, fill="red")
+        draw.text((top_x, top_y - text_size[1]), label, fill="white", font=font)
+
+    # Save the image to the same path but with the suffix "_annotated"
+    image.save(
+        f"{target_path}/{annotation.file_name.replace('.png', '')}_annotated.png"
     )

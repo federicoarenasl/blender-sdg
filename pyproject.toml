@@ -16,6 +16,7 @@ numpy = "^2.2.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.2"
+pillow = "^11.1.0"
 
 [build-system]
 requires = ["poetry-core"]

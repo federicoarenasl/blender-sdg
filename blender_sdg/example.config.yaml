@@ -1,11 +1,12 @@
 # General settings
 engine: blender
-target_path: test_output
+target_path: dataset/train
+debug: true # Whether to draw the bounding boxes on the images
 
 # Camera settings
 random_seed: 0
-resolution: [256, 256]
-samples: 128
+resolution: [512, 512]
+samples: 64
 
 # Scene settings
 scene_config:
@@ -27,9 +28,9 @@ scene_config:
 # Sweep settings
 sweep_config:
     name: example_sweep
-    step: 10
-    yaw_limits: [0.0, 0.0]
-    roll_limits: [0.0, 0.0]
+    step: 90
+    yaw_limits: [-180.0, 180.0]
+    roll_limits: [-180.0, 180.0]
     camera_height_limits: [1.0, 1.0]
     light_energy_limits: [1000.0, 1000.0]
     

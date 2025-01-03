@@ -103,8 +103,8 @@ class BlenderRenderer:
         return annotation
 
 
-def render_sweep_from_config(config: RenderingConfig):
-    """Render a sweep from a configuration."""
+def generate_dataset_from_config(config: RenderingConfig) -> Dataset:
+    """Generate a dataset from a rendering configuration."""
     # Initialize the scene and sweep
     scene: BlenderScene = BlenderScene.from_scene_config(config.scene_config)
     sweep: BlenderSweep = BlenderSweep.from_sweep_config(config.sweep_config)
@@ -132,6 +132,12 @@ def render_sweep_from_config(config: RenderingConfig):
             elements=scene.elements,
             snapshot_id=snapshot.id,
         )
+        if config.debug:
+            utils.draw_bounding_box_with_category(
+                target_path=config.target_path,
+                annotation=annotation,
+                snapshot=snapshot,
+            )
 
         dataset.annotations.append(annotation)
 
