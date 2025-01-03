@@ -113,9 +113,9 @@ def compute_bounding_box(
     Parameters:
     -----------
     lx: List[float]
-        The list of normalized x coordinates.
+        The list of normalized x coordinates for a given mesh's vertices.
     ly: List[float]
-        The list of normalized y coordinates.
+        The list of normalized y coordinates for a given mesh's vertices.
     relative: bool
         Whether to return the bounding box in relative coordinates.
     resolution: Tuple[int, int]
