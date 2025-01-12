@@ -31,7 +31,7 @@ def test_config_from_yaml(config: RenderingConfig):
 def test_scene_config(config: RenderingConfig):
     assert (
         config.scene_config.scene_path
-        == "core/interfaces/blender/scenes/simple-scene.blend"
+        == "tests/core/interfaces/blender/basic-scene.blend"
     )
     assert config.scene_config.scene_name == "Scene"
     assert config.scene_config.camera_names == ["Camera"]

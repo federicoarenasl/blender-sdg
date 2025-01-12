@@ -10,7 +10,7 @@ samples: 64
 
 # Scene settings
 scene_config:
-  scene_path: core/interfaces/blender/scenes/simple-scene.blend
+  scene_path: tests/core/interfaces/blender/basic-scene.blend
   scene_name: Scene
   camera_names:
     - Camera
