@@ -1,0 +1,36 @@
+# General settings
+engine: blender
+target_path: dataset/train
+debug: true # Whether to draw the bounding boxes on the images
+
+# Camera settings
+random_seed: 0
+resolution: [512, 512]
+samples: 64
+
+# Scene settings
+scene_config:
+  scene_path: core/interfaces/blender/scenes/tyless-5-objects.blend
+  scene_name: Scene
+  camera_names:
+    - Camera
+  axis_names:
+    - Axis
+  element_names:
+    - obj_01
+    - obj_02
+    - obj_03
+    - obj_04
+    - obj_05
+  light_names:
+    - Light
+
+# Sweep settings
+sweep_config:
+    name: example_sweep
+    step: 90
+    yaw_limits: [-180.0, 180.0]
+    roll_limits: [-180.0, 180.0]
+    camera_height_limits: [1.0, 1.0]
+    light_energy_limits: [1000.0, 1000.0]
+    

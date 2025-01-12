@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "blender-sdg"
+version = "0.1.0"
+description = "This is a package for Synthetic Data Generation (SDG) using Blender, for computer vision."
+authors = ["Federico <federicoarenas1246@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.7"
+pydantic = "^2.9.2"
+bpy = "^4.2.0"
+tqdm = "^4.66.5"
+pyyaml = "^6.0.2"
+mathutils = "^3.3.0"
+numpy = "^2.2.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+pillow = "^11.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
